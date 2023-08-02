@@ -45,7 +45,7 @@ def main():
     st.title("Line Chart with Hover Data Points")
 
     # Set the width of the columns and the width of the buttons
-    col1, col2, col3 = st.beta_columns([3, 1, 1])
+    col1, col2, col3 = st.columns([3, 1, 1])
 
     with col1:
         # Add a sidebar for selecting different sets of data and years
