@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Load the Excel files
 naics_definitions = pd.read_excel('C:/Users/SONY/Desktop/NAICS_definitions.xlsx')
@@ -58,7 +57,7 @@ def apply_filters(selected_naics):
         # Calculate the total sum per fipstate within a year
         for year, year_data in merged_data.groupby('year'):
             est_sum_data_dict = year_data.groupby(['year', 'fipstate'])['est'].sum().reset_index()
-    
+
             for fipstate, total in zip(est_sum_data_dict['fipstate'], est_sum_data_dict['est']):
                 if fipstate not in fipstate_data:
                     fipstate_data[fipstate] = []
