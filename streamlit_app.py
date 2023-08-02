@@ -15,10 +15,7 @@ def load_naics_definitions():
     return pd.read_excel(naics_definitions_path)
 
 # Function to filter data for specific industries related to selected NAICS codes
-def apply_filters(selected_naics):
-    # Load the NAICS definitions from the Excel file
-    naics_definitions = load_naics_definitions()
-
+def apply_filters(naics_definitions, selected_naics):
     filtered_data = pd.DataFrame()
     naics_values = set()
     est_sum_data_dict = {}
@@ -96,7 +93,7 @@ def main():
 
     # If the user has selected some NAICS codes and clicked the plot button, apply filters and plot line charts
     if selected_naics and plot_button:
-        fipstate_data, filtered_data_list = apply_filters(selected_naics)
+        fipstate_data, filtered_data_list = apply_filters(naics_definitions, selected_naics)
 
         # Plot line chart for total estimates per fipstate
         for fipstate, data in fipstate_data.items():
