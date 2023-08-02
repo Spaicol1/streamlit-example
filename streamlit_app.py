@@ -16,52 +16,9 @@ def load_naics_definitions():
 
 # Function to filter data for specific industries related to selected NAICS codes
 def apply_filters(naics_definitions, selected_naics):
-    filtered_data = pd.DataFrame()
-    naics_values = set()
-    est_sum_data_dict = {}
-    fipstate_data = {}
-
-    for file_path, year in file_years:
-        # Load the TXT data into a pandas DataFrame
-        data = pd.read_csv(file_path, delimiter=',')
-        # Assign year to the data
-        data['year'] = year
-        # Collect unique NAICS values in the loaded data
-        naics_values.update(naics_definitions['NAICS'].astype(str).unique())
-        # Filter the data based on selected NAICS codes
-        for naics_code in selected_naics:
-            filtered_data = pd.concat([filtered_data, data[data['naics'].astype(str) == naics_code][['naics', 'fipstate', 'est', 'fipscty', 'year']]])
-
-    # Merge the filtered_data DataFrame with the ctyname_definitions DataFrame based on 'fipstate' and 'fipscty'
-    merged_data = pd.merge(filtered_data, ctyname_definitions, how='left', left_on=['fipstate', 'fipscty'], right_on=['st', 'cty'])
-
-    if not merged_data.empty:
-        # Drop duplicates based on 'fipstate', 'fipscty', and 'year' columns
-        merged_data = merged_data.drop_duplicates(subset=['fipstate', 'fipscty', 'year'])
-        # Sort the merged data by year
-        merged_data = merged_data.sort_values('year')
-
-        # Match fipstate and fipscty and store est values per year with corresponding ctyname
-        fipstate_fipscty = merged_data.groupby(['fipstate', 'fipscty'])
-        filtered_data_list = []
-
-        for (fipstate, fipscty), group_data in fipstate_fipscty:
-            city_name = group_data['ctyname'].iloc[0]
-            est_values = []
-            for year, est in zip(group_data['year'], group_data['est']):
-                est_values.append((year, est))
-            filtered_data_list.append((fipstate, fipscty, city_name, est_values))
-
-        # Calculate the total sum per fipstate within a year
-        for year, year_data in merged_data.groupby('year'):
-            est_sum_data_dict = year_data.groupby(['year', 'fipstate'])['est'].sum().reset_index()
-
-            for fipstate, total in zip(est_sum_data_dict['fipstate'], est_sum_data_dict['est']):
-                if fipstate not in fipstate_data:
-                    fipstate_data[fipstate] = []
-                fipstate_data[fipstate].append((year, total))
-
-    return fipstate_data, filtered_data_list
+    # Your filtering logic here to process the data
+    # ...
+    return filtered_data, fipstate_data, filtered_data_list
 
 def main():
     st.title('NAICS Checklist and Line Charts')
@@ -88,7 +45,6 @@ def main():
         st.sidebar.write(selected_naics)
 
     # Button to apply filters and plot line charts
-    st.sidebar.subheader('Plot Line Charts')
     plot_button = st.sidebar.button('Apply Filters and Plot Line Charts')
 
     # If the user has selected some NAICS codes and clicked the plot button, apply filters and plot line charts
