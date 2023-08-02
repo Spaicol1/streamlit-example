@@ -44,39 +44,33 @@ def main():
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
 
-    # Set the width of the columns
-    col1, col2, col3 = st.columns(3)
+    # Set the width of the columns and the width of the buttons
+    col1, col2, col3 = st.beta_columns([3, 1, 1])
 
     with col1:
-        chart_button = st.button("Chart")
-        if chart_button:
-            # Add a sidebar for selecting different sets of data and years
-            selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
-            selected_state = st.sidebar.selectbox("Select State:", states)
-            selected_county = st.sidebar.selectbox("Select County:", counties)
-            selected_naics = st.sidebar.selectbox("Select NAICs:", naics)
+        # Add a sidebar for selecting different sets of data and years
+        selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
+        selected_state = st.sidebar.selectbox("Select State:", states)
+        selected_county = st.sidebar.selectbox("Select County:", counties)
+        selected_naics = st.sidebar.selectbox("Select NAICs:", naics)
 
-            # Add a slider to tweak the years selected
-            start_year = st.sidebar.slider("Select start year:", min_value=min(years), max_value=max(years), value=min(years))
-            end_year = st.sidebar.slider("Select end year:", min_value=min(years), max_value=max(years), value=max(years))
+        # Add a slider to tweak the years selected
+        start_year = st.sidebar.slider("Select start year:", min_value=min(years), max_value=max(years), value=min(years))
+        end_year = st.sidebar.slider("Select end year:", min_value=min(years), max_value=max(years), value=max(years))
 
-            # Filter the data based on the selected dropdown values and years
-            filtered_data = df  # You can replace this with actual filtering logic based on the selected values and years
+        # Filter the data based on the selected dropdown values and years
+        filtered_data = df  # You can replace this with actual filtering logic based on the selected values and years
 
-            # Display the chart using Streamlit
-            st.altair_chart(chart, use_container_width=True)
+        # Display the chart using Streamlit
+        st.altair_chart(chart, use_container_width=True)
 
     with col2:
-        data_button = st.button("Data")
-        if data_button:
-            # Display the filtered data as a table
-            st.dataframe(df)
+        # Display the filtered data as a table
+        st.dataframe(filtered_data)
 
     with col3:
-        export_button = st.button("Export")
-        if export_button:
-            # Add export options here (e.g., download button)
-            st.write("Add your export options here")
+        # Add export options here (e.g., download button)
+        st.write("Add your export options here")
 
 if __name__ == '__main__':
     main()
