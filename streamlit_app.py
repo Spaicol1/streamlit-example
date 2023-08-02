@@ -44,8 +44,8 @@ def main():
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
 
-    # Add a tab for the chart
-    chart_tab = st.beta_container()
+    # Add a container for the chart
+    chart_tab = st.container()
     with chart_tab:
         # Add a sidebar for selecting different sets of data and years
         selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
@@ -66,13 +66,13 @@ def main():
         # Display the filtered data as a table
         st.dataframe(filtered_data)
 
-    # Add a tab for the dataframe (table)
-    data_tab = st.beta_container()
+    # Add a container for the dataframe (table)
+    data_tab = st.container()
     with data_tab:
         st.dataframe(df)
 
-    # Add a tab for the export options
-    export_tab = st.beta_container()
+    # Add a container for the export options
+    export_tab = st.container()
     with export_tab:
         st.write("Add your export options here")
 
