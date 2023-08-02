@@ -41,18 +41,29 @@ def main():
     median_line = alt.Chart(pd.DataFrame({'median_value': [median_value]})).mark_rule(color='green').encode(y='median_value')
     cagr_line = alt.Chart(pd.DataFrame({'cagr_value': [cagr_value]})).mark_rule(color='blue').encode(y='cagr_value')
 
-    # Combine the line chart, data points, and lines
-    chart = (line_chart + data_points + mean_line + median_line + cagr_line).interactive()
+    # Combine the line chart, data points, and lines using Altair's layer
+    chart = alt.layer(line_chart, data_points)
 
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
 
-    # Add checkboxes to toggle mean, median, and CAGR lines
-    show_mean = st.checkbox("Show Mean Line", value=True)
-    show_median = st.checkbox("Show Median Line", value=True)
-    show_cagr = st.checkbox("Show CAGR Line", value=True)
-
     # Display the chart using Streamlit
+    st.altair_chart(chart, use_container_width=True)
+
+    # Add checkboxes to toggle mean, median, and CAGR lines
+    show_mean = st.checkbox("Show Mean Line", value=True, key='mean')
+    show_median = st.checkbox("Show Median Line", value=True, key='median')
+    show_cagr = st.checkbox("Show CAGR Line", value=True, key='cagr')
+
+    # Conditionally add mean, median, and CAGR lines to the chart
+    if show_mean:
+        chart += mean_line
+    if show_median:
+        chart += median_line
+    if show_cagr:
+        chart += cagr_line
+
+    # Display the updated chart
     st.altair_chart(chart, use_container_width=True)
 
     # Add a slider to tweak the years selected
