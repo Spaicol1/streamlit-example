@@ -3,9 +3,6 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
-def calculate_cagr(start_value, end_value, num_years):
-    return (end_value / start_value) ** (1 / num_years) - 1
-
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
     years = list(range(1900, 2024))
@@ -29,41 +26,19 @@ def main():
         tooltip=['x_values', 'y_values']  # Show x and y values on hover
     )
 
-    # Calculate mean, median, and CAGR
-    mean_value = np.mean(y_values)
-    median_value = np.median(y_values)
-    start_value, end_value = y_values[0], y_values[-1]
-    num_years = len(years) - 1
-    cagr_value = calculate_cagr(start_value, end_value, num_years)
+    # Calculate the average value
+    avg_value = np.mean(y_values)
 
-    # Create mean, median, and CAGR lines
-    mean_line = alt.Chart(pd.DataFrame({'mean_value': [mean_value]})).mark_rule(color='red').encode(y='mean_value')
-    median_line = alt.Chart(pd.DataFrame({'median_value': [median_value]})).mark_rule(color='green').encode(y='median_value')
-    cagr_line = alt.Chart(pd.DataFrame({'cagr_value': [cagr_value]})).mark_rule(color='blue').encode(y='cagr_value')
+    # Create the average line
+    avg_line = alt.Chart(pd.DataFrame({'avg_value': [avg_value]})).mark_rule(color='orange').encode(y='avg_value')
 
-    # Combine the line chart, data points, and lines using Altair's layer
-    chart = alt.layer(line_chart, data_points)
+    # Combine the line chart, data points, and average line using Altair's layer
+    chart = alt.layer(line_chart, data_points, avg_line).interactive()
 
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
 
     # Display the chart using Streamlit
-    st.altair_chart(chart, use_container_width=True)
-
-    # Add checkboxes to toggle mean, median, and CAGR lines
-    show_mean = st.checkbox("Show Mean Line", value=True, key='mean')
-    show_median = st.checkbox("Show Median Line", value=True, key='median')
-    show_cagr = st.checkbox("Show CAGR Line", value=True, key='cagr')
-
-    # Conditionally add mean, median, and CAGR lines to the chart
-    if show_mean:
-        chart += mean_line
-    if show_median:
-        chart += median_line
-    if show_cagr:
-        chart += cagr_line
-
-    # Display the updated chart
     st.altair_chart(chart, use_container_width=True)
 
     # Add a slider to tweak the years selected
