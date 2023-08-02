@@ -1,11 +1,12 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
+import numpy as np
 
 def main():
-    # Sample data with years from 1900 to 2023 and corresponding y-values
+    # Sample data with years from 1900 to 2023 and randomly generated y-values
     years = list(range(1900, 2024))
-    y_values = [10, 5, 7, 12, 8, ...]  # Add the corresponding y-values for each year
+    y_values = np.random.randint(0, 100, len(years))
 
     # Combine years and y_values into tuples using zip and create a DataFrame
     data = {
