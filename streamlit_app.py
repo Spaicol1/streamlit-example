@@ -8,6 +8,12 @@ def main():
     years = list(range(1900, 2024))
     y_values = np.random.randint(0, 100, len(years))
 
+    # Sample data for the dropdowns (You can replace these with your own data)
+    establishment_types = ['Type A', 'Type B', 'Type C']
+    states = ['State A', 'State B', 'State C']
+    counties = ['County A', 'County B', 'County C']
+    naics = ['NAICs 1', 'NAICs 2', 'NAICs 3']
+
     # Combine years and y_values into tuples using zip and create a DataFrame
     data = {
         'x_values': years,
@@ -38,15 +44,17 @@ def main():
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
 
+    # Add a sidebar for selecting different sets of data
+    selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
+    selected_state = st.sidebar.selectbox("Select State:", states)
+    selected_county = st.sidebar.selectbox("Select County:", counties)
+    selected_naics = st.sidebar.selectbox("Select NAICs:", naics)
+
+    # Filter the data based on the selected dropdown values
+    filtered_data = df  # You can replace this with actual filtering logic based on the selected values
+
     # Display the chart using Streamlit
     st.altair_chart(chart, use_container_width=True)
-
-    # Add a slider to tweak the years selected
-    start_year = st.slider("Select start year:", min_value=min(df['x_values']), max_value=max(df['x_values']), value=min(df['x_values']))
-    end_year = st.slider("Select end year:", min_value=min(df['x_values']), max_value=max(df['x_values']), value=max(df['x_values']))
-
-    # Filter the data based on the selected years
-    filtered_data = df[(df['x_values'] >= start_year) & (df['x_values'] <= end_year)]
 
     # Display the filtered data as a table
     st.dataframe(filtered_data)
