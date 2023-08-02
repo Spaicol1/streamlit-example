@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Function to filter data based on user selection
 def filter_data(data, column, min_val, max_val):
@@ -39,28 +38,16 @@ def main():
         for fipstate, data in fipstate_data.items():
             years = np.array([year for year, _ in data])
             totals = np.array([total for _, total in data])
-
-            plt.figure()
-            plt.plot(years, totals, marker='o')
-            plt.xlabel('Year')
-            plt.ylabel('Total Estimates')
-            plt.title(f"Total Companies per Fipstate ({fipstate})")
-            plt.xticks(years, years.astype(int))  # Set x-axis ticks as full numbers
-            st.pyplot()
+            chart_data = pd.DataFrame({'Year': years, 'Total Estimates': totals})
+            st.line_chart(chart_data.set_index('Year'))
 
         # Plot line charts for individual ctynames
         filtered_data_list = get_filtered_data_list(filtered_data)
         for fipstate, fipscty, city_name, est_values in filtered_data_list:
             years = np.array([year for year, _ in est_values])
             estimates = np.array([est for _, est in est_values])
-
-            plt.figure()
-            plt.plot(years, estimates, marker='o')
-            plt.xlabel('Year')
-            plt.ylabel('# of Companies')
-            plt.title(f"Companies in {city_name} ({fipstate}-{fipscty})")
-            plt.xticks(years, years.astype(int))  # Set x-axis ticks as full numbers
-            st.pyplot()
+            chart_data = pd.DataFrame({'Year': years, '# of Companies': estimates})
+            st.line_chart(chart_data.set_index('Year'))
 
 def apply_filters(selected_naics, file_years, naics_definitions, ctyname_definitions):
     filtered_data = pd.DataFrame()
