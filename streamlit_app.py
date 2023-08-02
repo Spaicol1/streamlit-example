@@ -10,18 +10,15 @@ base_dir = os.getcwd()
 naics_definitions_path = os.path.join(base_dir, 'NAICS_definitions.xlsx')
 ctyname_definitions_path = os.path.join(base_dir, 'Geographical Designations.xlsx')
 
-# List of file paths and corresponding years
-file_years = [
-    (os.path.join(base_dir, 'CompleteCounty2021.txt'), 2021),
-    (os.path.join(base_dir, 'CompleteCounty2020.txt'), 2020),
-    (os.path.join(base_dir, 'CompleteCounty2019.txt'), 2019),
-    (os.path.join(base_dir, 'CompleteCounty2018.txt'), 2018),
-    (os.path.join(base_dir, 'CompleteCounty2017.txt'), 2017),
-    # Add more file paths and years as needed
-]
+# Function to load NAICS definitions from the Excel file
+def load_naics_definitions():
+    return pd.read_excel(naics_definitions_path)
 
 # Function to filter data for specific industries related to selected NAICS codes
 def apply_filters(selected_naics):
+    # Load the NAICS definitions from the Excel file
+    naics_definitions = load_naics_definitions()
+
     filtered_data = pd.DataFrame()
     naics_values = set()
     est_sum_data_dict = {}
@@ -71,6 +68,9 @@ def apply_filters(selected_naics):
 
 def main():
     st.title('NAICS Checklist and Line Charts')
+
+    # Load the NAICS definitions
+    naics_definitions = load_naics_definitions()
 
     # List to store the selected NAICS codes
     selected_naics = []
