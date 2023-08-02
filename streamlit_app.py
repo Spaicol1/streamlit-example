@@ -3,6 +3,25 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
+# Custom CSS to style the sidebar and header
+custom_css = """
+<style>
+.sidebar .sidebar-content {
+    background-image: linear-gradient(#f9a32c, #f7941d);
+    color: white;
+}
+.stButton button {
+    background-color: #f9a32c !important;
+    border-color: #f7941d !important;
+    color: white !important;
+}
+.stSlider div {
+    background-color: #f7941d !important;
+}
+</style>
+"""
+st.markdown(custom_css, unsafe_allow_html=True)
+
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
     years = list(range(1900, 2024))
@@ -65,3 +84,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
