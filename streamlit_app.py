@@ -3,10 +3,10 @@ import pandas as pd
 import altair as alt
 
 def main():
-    # Sample data
+    # Sample data with years from 1900 to 2023
     data = {
-        'x_values': [1, 2, 3, 4, 5],
-        'y_values': [10, 5, 7, 12, 8]
+        'x_values': list(range(1900, 2024)),
+        'y_values': [10, 5, 7, 12, 8, ...]  # Add the corresponding y-values for each year
     }
     df = pd.DataFrame(data)
 
