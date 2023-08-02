@@ -3,6 +3,9 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
+def calculate_cagr(start_value, end_value, num_years):
+    return (end_value / start_value) ** (1 / num_years) - 1
+
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
     years = list(range(1900, 2024))
@@ -26,11 +29,28 @@ def main():
         tooltip=['x_values', 'y_values']  # Show x and y values on hover
     )
 
-    # Combine the line chart and data points
-    chart = (line_chart + data_points).interactive()
+    # Calculate mean, median, and CAGR
+    mean_value = np.mean(y_values)
+    median_value = np.median(y_values)
+    start_value, end_value = y_values[0], y_values[-1]
+    num_years = len(years) - 1
+    cagr_value = calculate_cagr(start_value, end_value, num_years)
+
+    # Create mean, median, and CAGR lines
+    mean_line = alt.Chart(pd.DataFrame({'mean_value': [mean_value]})).mark_rule(color='red').encode(y='mean_value')
+    median_line = alt.Chart(pd.DataFrame({'median_value': [median_value]})).mark_rule(color='green').encode(y='median_value')
+    cagr_line = alt.Chart(pd.DataFrame({'cagr_value': [cagr_value]})).mark_rule(color='blue').encode(y='cagr_value')
+
+    # Combine the line chart, data points, and lines
+    chart = (line_chart + data_points + mean_line + median_line + cagr_line).interactive()
 
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
+
+    # Add checkboxes to toggle mean, median, and CAGR lines
+    show_mean = st.checkbox("Show Mean Line", value=True)
+    show_median = st.checkbox("Show Median Line", value=True)
+    show_cagr = st.checkbox("Show CAGR Line", value=True)
 
     # Display the chart using Streamlit
     st.altair_chart(chart, use_container_width=True)
