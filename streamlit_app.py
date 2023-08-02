@@ -3,35 +3,6 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
-# Custom CSS to style the sidebar and header
-custom_css = """
-<style>
-.sidebar .sidebar-content {
-    background-image: linear-gradient(#f9a32c, #f7941d);
-    color: white;
-}
-.stButton button {
-    background-color: #f9a32c !important;
-    border-color: #f7941d !important;
-    color: white !important;
-}
-.stSlider div {
-    background-color: #0053A0 !important;
-}
-.stSelectbox {
-    background-color: #f7941d !important;
-    color: white !important;
-}
-.stGraph .stMarkdown {
-    margin-top: -25px;
-}
-.stTitle {
-    margin-top: -35px;
-}
-</style>
-"""
-st.markdown(custom_css, unsafe_allow_html=True)
-
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
     years = list(range(1900, 2024))
@@ -57,7 +28,7 @@ def main():
     )
 
     # Add interactive data points using the `circle` mark
-    data_points = line_chart.mark_circle(color='darkblue').encode(
+    data_points = line_chart.mark_circle().encode(
         tooltip=['x_values', 'y_values']  # Show x and y values on hover
     )
 
@@ -74,7 +45,6 @@ def main():
     st.title("Line Chart with Hover Data Points")
 
     # Add a sidebar for selecting different sets of data and years
-    st.sidebar.markdown("<h2 style='color:white'>Selection Menu</h2>", unsafe_allow_html=True)
     selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
     selected_state = st.sidebar.selectbox("Select State:", states)
     selected_county = st.sidebar.selectbox("Select County:", counties)
