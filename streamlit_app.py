@@ -1,18 +1,22 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import os
 
-# Load the Excel files
-naics_definitions = pd.read_excel('C:/Users/SONY/Desktop/NAICS_definitions.xlsx')
-ctyname_definitions = pd.read_excel('C:/Users/SONY/Desktop/Geographical Designations.xlsx')
+# Get the current working directory
+base_dir = os.getcwd()
+
+# Define the file paths relative to the current working directory
+naics_definitions_path = os.path.join(base_dir, 'NAICS_definitions.xlsx')
+ctyname_definitions_path = os.path.join(base_dir, 'Geographical Designations.xlsx')
 
 # List of file paths and corresponding years
 file_years = [
-    ('C:/Users/SONY/Desktop/CompleteCounty2021.txt', 2021),
-    ('C:/Users/SONY/Desktop/CompleteCounty2020.txt', 2020),
-    ('C:/Users/SONY/Desktop/CompleteCounty2019.txt', 2019),
-    ('C:/Users/SONY/Desktop/CompleteCounty2018.txt', 2018),
-    ('C:/Users/SONY/Desktop/CompleteCounty2017.txt', 2017),
+    (os.path.join(base_dir, 'CompleteCounty2021.txt'), 2021),
+    (os.path.join(base_dir, 'CompleteCounty2020.txt'), 2020),
+    (os.path.join(base_dir, 'CompleteCounty2019.txt'), 2019),
+    (os.path.join(base_dir, 'CompleteCounty2018.txt'), 2018),
+    (os.path.join(base_dir, 'CompleteCounty2017.txt'), 2017),
     # Add more file paths and years as needed
 ]
 
