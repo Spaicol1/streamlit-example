@@ -44,11 +44,12 @@ def main():
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
 
-    # Create clickable tabs using st.button
-    col1, col2, col3 = st.columns(3)
+    # Set the width of the columns and the width of the buttons
+    col1, col2, col3 = st.beta_columns([2, 2, 2])
+    button_width = 200
 
     with col1:
-        if st.button("Chart"):
+        if st.button("Chart", key="chart_button", width=button_width):
             # Add a sidebar for selecting different sets of data and years
             selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
             selected_state = st.sidebar.selectbox("Select State:", states)
@@ -66,12 +67,12 @@ def main():
             st.altair_chart(chart, use_container_width=True)
 
     with col2:
-        if st.button("Data"):
+        if st.button("Data", key="data_button", width=button_width):
             # Display the filtered data as a table
             st.dataframe(df)
 
     with col3:
-        if st.button("Export"):
+        if st.button("Export", key="export_button", width=button_width):
             # Add export options here (e.g., download button)
             st.write("Add your export options here")
 
