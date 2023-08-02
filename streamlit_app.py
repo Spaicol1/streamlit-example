@@ -74,11 +74,11 @@ def main():
     st.title("Line Chart with Hover Data Points")
 
     # Add a sidebar for selecting different sets of data and years
-    st.sidebar.markdown("<h2>Selection Menu</h2>", unsafe_allow_html=True)
-    selected_establishment_type = st.sidebar.selectbox("<span style='color:white'>Select Establishment Type:</span>", establishment_types, format_func=lambda x: f'<span style="color:white">{x}</span>', unsafe_allow_html=True)
-    selected_state = st.sidebar.selectbox("<span style='color:white'>Select State:</span>", states, format_func=lambda x: f'<span style="color:white">{x}</span>', unsafe_allow_html=True)
-    selected_county = st.sidebar.selectbox("<span style='color:white'>Select County:</span>", counties, format_func=lambda x: f'<span style="color:white">{x}</span>', unsafe_allow_html=True)
-    selected_naics = st.sidebar.selectbox("<span style='color:white'>Select NAICs:</span>", naics, format_func=lambda x: f'<span style="color:white">{x}</span>', unsafe_allow_html=True)
+    st.sidebar.markdown("<h2 style='color:white'>Selection Menu</h2>", unsafe_allow_html=True)
+    selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
+    selected_state = st.sidebar.selectbox("Select State:", states)
+    selected_county = st.sidebar.selectbox("Select County:", counties)
+    selected_naics = st.sidebar.selectbox("Select NAICs:", naics)
 
     # Add a slider to tweak the years selected
     start_year = st.sidebar.slider("Select start year:", min_value=min(years), max_value=max(years), value=min(years))
