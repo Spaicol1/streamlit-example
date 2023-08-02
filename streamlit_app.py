@@ -44,9 +44,10 @@ def main():
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
 
-    # Add a container for the chart
-    chart_tab = st.container()
-    with chart_tab:
+    # Create a dropdown to switch between tabs
+    selected_tab = st.selectbox("Select Tab:", ["Chart", "Data", "Export"])
+
+    if selected_tab == "Chart":
         # Add a sidebar for selecting different sets of data and years
         selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
         selected_state = st.sidebar.selectbox("Select State:", states)
@@ -63,17 +64,12 @@ def main():
         # Display the chart using Streamlit
         st.altair_chart(chart, use_container_width=True)
 
+    elif selected_tab == "Data":
         # Display the filtered data as a table
-        st.dataframe(filtered_data)
-
-    # Add a container for the dataframe (table)
-    data_tab = st.container()
-    with data_tab:
         st.dataframe(df)
 
-    # Add a container for the export options
-    export_tab = st.container()
-    with export_tab:
+    elif selected_tab == "Export":
+        # Add export options here (e.g., download button)
         st.write("Add your export options here")
 
 if __name__ == '__main__':
