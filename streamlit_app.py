@@ -1,38 +1,45 @@
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-"""
-# Welcome to Streamlit!
+# Sample data for 2020 and 2021, replace with your own data
+data_2020 = pd.DataFrame({
+    'Date': pd.date_range(start='2020-01-01', periods=12, freq='M'),
+    'Value': [10, 12, 15, 8, 10, 11, 14, 17, 20, 21, 19, 18]
+})
 
-Edit `/streamlit_app.py` to customize hhhhhhhhh app to your heart's desire :heart:
+data_2021 = pd.DataFrame({
+    'Date': pd.date_range(start='2021-01-01', periods=12, freq='M'),
+    'Value': [11, 13, 16, 9, 11, 12, 15, 18, 21, 22, 20, 19]
+})
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+# Combine the datasets
+all_data = {'2020': data_2020, '2021': data_2021}
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+def plot_line_chart(data, title):
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(x='Date', y='Value', data=data, marker='o')
+    plt.title(title)
+    plt.xlabel('Date')
+    plt.ylabel('Value')
+    st.pyplot()
 
+def main():
+    st.title('Line Chart with Slider and Filters')
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+    # Year range slider
+    years = list(all_data.keys())
+    year_range = st.sidebar.slider('Select Year Range', min_value=years[0], max_value=years[-1], value=(years[0], years[-1]))
 
-    Point = namedtuple('Point', 'x y')
-    data = []
+    # Dataset selection filter
+    selected_dataset = st.sidebar.selectbox('Select Dataset', years)
 
-    points_per_turn = total_points / num_turns
+    # Filter data based on selected year range and dataset
+    filtered_data = pd.concat([all_data[year] for year in years if year_range[0] <= year <= year_range[1]])
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
+    # Plot the line chart
+    plot_line_chart(filtered_data, f'Line Chart for {selected_dataset}')
 
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+if __name__ == '__main__':
+    main()
