@@ -3,10 +3,14 @@ import pandas as pd
 import altair as alt
 
 def main():
-    # Sample data with years from 1900 to 2023
+    # Sample data with years from 1900 to 2023 and corresponding y-values
+    years = list(range(1900, 2024))
+    y_values = [10, 5, 7, 12, 8, ...]  # Add the corresponding y-values for each year
+
+    # Combine years and y_values into tuples using zip and create a DataFrame
     data = {
-        'x_values': list(range(1900, 2024)),
-        'y_values': [10, 5, 7, 12, 8, ...]  # Add the corresponding y-values for each year
+        'x_values': years,
+        'y_values': y_values
     }
     df = pd.DataFrame(data)
 
