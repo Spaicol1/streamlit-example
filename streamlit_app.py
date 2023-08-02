@@ -45,7 +45,7 @@ def main():
     st.title("Line Chart with Hover Data Points")
 
     # Set the width of the columns and the width of the buttons
-    col1, col2, col3 = st.beta_columns([2, 2, 2])
+    col1, col2, col3 = st.columns(3)
     button_width = 200
 
     with col1:
