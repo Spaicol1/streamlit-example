@@ -3,77 +3,6 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
-# Define custom CSS styles for the app
-st.markdown("""
-    <style>
-    .stApp {
-        max-width: 100%;
-        padding-top: 20px;
-    }
-    .stApp .stAlert {
-        text-align: center;
-        padding: 10px;
-    }
-    .stApp .stTable {
-        text-align: center;
-    }
-    .stApp .stMetric {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        text-align: center;
-    }
-    .stApp .stMetric h1 {
-        font-size: 28px;
-        margin-bottom: 5px;
-    }
-    .stApp .stMetric p {
-        font-size: 20px;
-        margin: 0;
-    }
-    .stApp .stMetric .delta {
-        font-size: 16px;
-    }
-    .stApp .stHeader {
-        text-align: center;
-        font-size: 36px;
-        margin-bottom: 30px;
-        color: #3366ff; /* Header color */
-    }
-    .stApp .stTitle {
-        text-align: center;
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-    .stApp .stDownloadButton {
-        display: block;
-        margin: 0 auto;
-        padding: 10px 20px;
-        background-color: #3366ff; /* Button background color */
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 18px;
-        cursor: pointer;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-    }
-    .stApp .stDownloadButton:hover {
-        background-color: #2355e6; /* Button background color on hover */
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    }
-    .stApp .stDownloadButton:active {
-        background-color: #1a3d99; /* Button background color on click */
-    }
-    /* Larger font size for dropdown menu titles */
-    .stApp .stSelectbox label {
-        font-size: 20px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
     years = list(range(1900, 2024))
@@ -121,7 +50,7 @@ def main():
     st.title("Line Chart with Hover Data Points")
 
     # Add a header for the page
-    st.header("My Streamlit App")
+    st.title("My Streamlit App")
 
     # Add the chart
     st.altair_chart(chart, use_container_width=True)
