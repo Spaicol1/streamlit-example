@@ -7,19 +7,8 @@ import numpy as np
 st.markdown("""
     <style>
     .stApp {
-        max-width: 800px;
-        margin: 0 auto;
+        max-width: 100%;
         padding-top: 20px;
-    }
-    .stApp h1 {
-        text-align: center;
-        font-size: 36px;
-        margin-bottom: 30px;
-    }
-    .stApp h2 {
-        text-align: center;
-        font-size: 24px;
-        margin-bottom: 20px;
     }
     .stApp .stAlert {
         text-align: center;
@@ -27,6 +16,38 @@ st.markdown("""
     }
     .stApp .stTable {
         text-align: center;
+    }
+    .stApp .stMetric {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+    .stApp .stMetric h1 {
+        font-size: 28px;
+        margin-bottom: 5px;
+    }
+    .stApp .stMetric p {
+        font-size: 20px;
+        margin: 0;
+    }
+    .stApp .stMetric .delta {
+        font-size: 16px;
+    }
+    .stApp .stHeader {
+        text-align: center;
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+    .stApp .stTitle {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .stApp .stDownloadButton {
+        display: block;
+        margin: 0 auto;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -112,10 +133,10 @@ def main():
     filtered_data = df  # You can replace this with actual filtering logic based on the selected values and years
 
     # Display the filtered data as a table
-    st.dataframe(filtered_data)
+    st.table(filtered_data)
 
     # Add a button to download the chart as PNG
-    if st.button("Download Chart as PNG"):
+    if st.button("Download Chart as PNG", key="download_chart", class_="stDownloadButton"):
         chart.save("chart.png")
         st.success("Chart downloaded successfully!")
 
