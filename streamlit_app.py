@@ -22,6 +22,7 @@ st.markdown(
         font-size: 16px;
         padding: 0.75rem 1.25rem;
         border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     .st-bk, .st-dd {
         color: #333;
@@ -37,6 +38,7 @@ st.markdown(
     .st-dd.st-dd-options:hover {
         background-color: #007BFF;
         color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     .st-ec {
         font-size: 16px;
@@ -44,6 +46,21 @@ st.markdown(
         padding: 0.25rem 0.5rem;
         background-color: #007BFF;
         color: white;
+    }
+    .stTitle {
+        font-size: 32px !important;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .stSidebarTitle {
+        font-size: 24px !important;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .stSubheader {
+        font-size: 20px !important;
+        font-weight: bold;
     }
     </style>
     """,
@@ -94,7 +111,7 @@ def main():
     chart = alt.layer(line_chart, data_points, avg_line).interactive()
 
     # Add a title to the chart
-    st.title("Line Chart with Hover Data Points")
+    st.markdown("<h1 class='stTitle'>Line Chart with Hover Data Points</h1>", unsafe_allow_html=True)
 
     # Add the chart
     st.altair_chart(chart, use_container_width=True)
@@ -119,7 +136,7 @@ def main():
 
     # Add a sidebar for selecting different sets of data and years
     with st.sidebar:
-        st.subheader("Data Selection")
+        st.markdown("<h2 class='stSidebarTitle'>Data Selection</h2>", unsafe_allow_html=True)
 
         # Custom dropdown styles
         selected_establishment_type = st.selectbox("Select Establishment Type:", establishment_types, key="est_type",
