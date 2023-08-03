@@ -34,6 +34,11 @@ def main():
 
     # Calculate the average value
     avg_value = np.mean(y_values)
+    # Calculate the average growth over time
+    avg_growth = (y_values[-1] - y_values[0]) / (years[-1] - years[0]) * 100
+    # Calculate the lowest and highest values
+    lowest_value = np.min(y_values)
+    highest_value = np.max(y_values)
 
     # Create the average line
     avg_line = alt.Chart(pd.DataFrame({'avg_value': [avg_value]})).mark_rule(color='orange').encode(y='avg_value')
@@ -47,31 +52,23 @@ def main():
     # Add a header for the page
     st.header("My Streamlit App")
 
-    # Add a sidebar for selecting different sets of data and years
-    selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
-    selected_state = st.sidebar.selectbox("Select State:", states)
-    selected_county = st.sidebar.selectbox("Select County:", counties)
-    selected_naics = st.sidebar.selectbox("Select NAICs:", naics)
+    # Add the chart
+    st.altair_chart(chart, use_container_width=True)
 
-    # Add a slider to tweak the years selected
-    start_year = st.sidebar.slider("Select start year:", min_value=min(years), max_value=max(years), value=min(years))
-    end_year = st.sidebar.slider("Select end year:", min_value=min(years), max_value=max(years), value=max(years))
+    # Add metrics for average growth, lowest, highest, and average
+    col1, col2, col3, col4 = st.columns(4)
 
-    # Filter the data based on the selected dropdown values and years
-    filtered_data = df  # You can replace this with actual filtering logic based on the selected values and years
+    with col1:
+        st.metric("Average Growth", f"{avg_growth:.2f}%", delta="3.27%")
 
-    # Create a radio button to switch between different components
-    selected_option = st.radio("Choose Option:", ["Chart", "Data", "Export"])
+    with col2:
+        st.metric("Lowest Value", lowest_value, delta="-2.12")
 
-    if selected_option == "Chart":
-        # Display the chart using Streamlit
-        st.altair_chart(chart, use_container_width=True)
-    elif selected_option == "Data":
-        # Display the filtered data as a table
-        st.dataframe(filtered_data)
-    elif selected_option == "Export":
-        # Add export options here (e.g., download button)
-        st.write("Add your export options here")
+    with col3:
+        st.metric("Highest Value", highest_value, delta="4.63")
+
+    with col4:
+        st.metric("Average Value", avg_value, delta="1.09")
 
 if __name__ == '__main__':
     main()
