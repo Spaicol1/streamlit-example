@@ -49,8 +49,8 @@ def main():
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
 
-    # Add a header for the page
-    st.title("My Streamlit App")
+    # Add a header for the page using Markdown
+    st.markdown("## My Streamlit App")
 
     # Add the chart
     st.altair_chart(chart, use_container_width=True)
@@ -59,16 +59,16 @@ def main():
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Average Growth", f"{avg_growth:.2f}%", delta="3.27%")
+        st.markdown(f"### Average Growth\n\n{avg_growth:.2f}%")
 
     with col2:
-        st.metric("Lowest Value", lowest_value, delta="-2.12")
+        st.markdown(f"### Lowest Value\n\n{lowest_value}")
 
     with col3:
-        st.metric("Highest Value", highest_value, delta="4.63")
+        st.markdown(f"### Highest Value\n\n{highest_value}")
 
     with col4:
-        st.metric("Average Value", avg_value, delta="1.09")
+        st.markdown(f"### Average Value\n\n{avg_value}")
 
     # Add a sidebar for selecting different sets of data and years
     selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
