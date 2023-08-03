@@ -39,6 +39,7 @@ st.markdown("""
         text-align: center;
         font-size: 36px;
         margin-bottom: 30px;
+        color: #3366ff; /* Header color */
     }
     .stApp .stTitle {
         text-align: center;
@@ -49,18 +50,22 @@ st.markdown("""
         display: block;
         margin: 0 auto;
         padding: 10px 20px;
-        background-color: #3366ff;
+        background-color: #3366ff; /* Button background color */
         color: white;
         border: none;
         border-radius: 5px;
         font-size: 18px;
         cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
     }
     .stApp .stDownloadButton:hover {
-        background-color: #2355e6;
+        background-color: #2355e6; /* Button background color on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
     .stApp .stDownloadButton:active {
-        background-color: #1a3d99;
+        background-color: #1a3d99; /* Button background color on click */
     }
     </style>
 """, unsafe_allow_html=True)
