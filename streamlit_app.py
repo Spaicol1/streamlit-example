@@ -14,8 +14,6 @@ st.set_page_config(
 import streamlit as st
 
 st.markdown(
-    """
-    <style>
     body {
         font-family: "Arial";
         color: #333;
@@ -40,8 +38,6 @@ st.markdown(
     .stMetricDelta {
         color: black; /* Black color for metric delta text */
     }
-    </style>
-    """
 )
 
 def main():
