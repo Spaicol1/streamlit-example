@@ -67,6 +67,10 @@ st.markdown("""
     .stApp .stDownloadButton:active {
         background-color: #1a3d99; /* Button background color on click */
     }
+    /* Larger font size for dropdown menu titles */
+    .stApp .stSelectbox label {
+        font-size: 20px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
