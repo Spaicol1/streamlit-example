@@ -44,6 +44,9 @@ def main():
     # Add a title to the chart
     st.title("Line Chart with Hover Data Points")
 
+    # Add a header for the page
+    st.header("My Streamlit App")
+
     # Add a sidebar for selecting different sets of data and years
     selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
     selected_state = st.sidebar.selectbox("Select State:", states)
