@@ -3,7 +3,7 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
-# Set Streamlit theme and custom styles
+# Set Streamlit theme
 st.set_page_config(
     page_title="My Streamlit App",
     page_icon="📊",
@@ -11,56 +11,33 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Custom Streamlit styles
 st.markdown(
     """
     <style>
-    .st-bk {
-        font-size: 16px;
-        padding: 0.5rem 1rem;
-    }
-    .st-dd {
-        font-size: 16px;
-        padding: 0.75rem 1.25rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .st-bk, .st-dd {
+    body {
+        font-family: "Arial";
         color: #333;
         background-color: #f8f8f8;
     }
-    .st-dd:hover {
-        background-color: #e0e0e0;
-    }
-    .st-dd.st-dd-options {
-        color: #007BFF;
-        background-color: #f8f8f8;
-    }
-    .st-dd.st-dd-options:hover {
+    .stButton {
         background-color: #007BFF;
         color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    .st-ec {
-        font-size: 16px;
-        border-radius: 8px;
-        padding: 0.25rem 0.5rem;
-        background-color: #007BFF;
-        color: white;
-    }
-    .stTitle {
-        font-size: 32px !important;
+        border-radius: 5px;
+        padding: 0.35rem 0.75rem;
         font-weight: bold;
-        margin-bottom: 1rem;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        font-size: 14px;
+        cursor: pointer;
     }
-    .stSidebarTitle {
-        font-size: 24px !important;
-        font-weight: bold;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    .stMetric {
+        background-color: #f0f0f0;
+        color: #333;
+        border-radius: 5px;
+        padding: 0.5rem 0.75rem;
+        text-align: center;
     }
-    .stSubheader {
-        font-size: 20px !important;
-        font-weight: bold;
+    .stMetricDelta {
+        color: #333;
     }
     </style>
     """,
@@ -111,7 +88,7 @@ def main():
     chart = alt.layer(line_chart, data_points, avg_line).interactive()
 
     # Add a title to the chart
-    st.markdown("<h1 class='stTitle'>Line Chart with Hover Data Points</h1>", unsafe_allow_html=True)
+    st.title("Line Chart with Hover Data Points")
 
     # Add the chart
     st.altair_chart(chart, use_container_width=True)
@@ -136,18 +113,11 @@ def main():
 
     # Add a sidebar for selecting different sets of data and years
     with st.sidebar:
-        st.markdown("<h2 class='stSidebarTitle'>Data Selection</h2>", unsafe_allow_html=True)
-
-        # Custom dropdown styles
-        selected_establishment_type = st.selectbox("Select Establishment Type:", establishment_types, key="est_type",
-                                                  format_func=lambda x: "Select Establishment Type" if x == "" else x,
-                                                  help="Choose an establishment type")
-        selected_state = st.selectbox("Select State:", states, key="state",
-                                      format_func=lambda x: "Select State" if x == "" else x, help="Choose a state")
-        selected_county = st.selectbox("Select County:", counties, key="county",
-                                       format_func=lambda x: "Select County" if x == "" else x, help="Choose a county")
-        selected_naics = st.selectbox("Select NAICs:", naics, key="naics",
-                                      format_func=lambda x: "Select NAICs" if x == "" else x, help="Choose a NAICs")
+        st.subheader("Data Selection")
+        selected_establishment_type = st.selectbox("Select Establishment Type:", establishment_types)
+        selected_state = st.selectbox("Select State:", states)
+        selected_county = st.selectbox("Select County:", counties)
+        selected_naics = st.selectbox("Select NAICs:", naics)
 
         st.subheader("Time Range")
         start_year = st.slider("Select start year:", min_value=min(years), max_value=max(years), value=min(years))
