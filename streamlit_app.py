@@ -53,17 +53,43 @@ def main():
     st.header("My Streamlit App")
 
     # Add the chart
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, use_container_width=True)
 
     # Add metrics for average growth, lowest, highest, and average
-    with col2:
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
         st.metric("Average Growth", f"{avg_growth:.2f}%", delta="3.27%")
+
+    with col2:
         st.metric("Lowest Value", lowest_value, delta="-2.12")
+
+    with col3:
         st.metric("Highest Value", highest_value, delta="4.63")
+
+    with col4:
         st.metric("Average Value", avg_value, delta="1.09")
+
+    # Add a sidebar for selecting different sets of data and years
+    selected_establishment_type = st.sidebar.selectbox("Select Establishment Type:", establishment_types)
+    selected_state = st.sidebar.selectbox("Select State:", states)
+    selected_county = st.sidebar.selectbox("Select County:", counties)
+    selected_naics = st.sidebar.selectbox("Select NAICs:", naics)
+
+    # Add a slider to tweak the years selected
+    start_year = st.sidebar.slider("Select start year:", min_value=min(years), max_value=max(years), value=min(years))
+    end_year = st.sidebar.slider("Select end year:", min_value=min(years), max_value=max(years), value=max(years))
+
+    # Filter the data based on the selected dropdown values and years
+    filtered_data = df  # You can replace this with actual filtering logic based on the selected values and years
+
+    # Display the filtered data as a table
+    st.table(filtered_data)
+
+    # Add a button to download the chart as PNG
+    if st.button("Download Chart as PNG"):
+        chart.save("chart.png")
+        st.success("Chart downloaded successfully!")
 
 if __name__ == '__main__':
     main()
