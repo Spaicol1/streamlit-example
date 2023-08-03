@@ -48,6 +48,19 @@ st.markdown("""
     .stApp .stDownloadButton {
         display: block;
         margin: 0 auto;
+        padding: 10px 20px;
+        background-color: #3366ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .stApp .stDownloadButton:hover {
+        background-color: #2355e6;
+    }
+    .stApp .stDownloadButton:active {
+        background-color: #1a3d99;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -136,7 +149,7 @@ def main():
     st.table(filtered_data)
 
     # Add a button to download the chart as PNG
-    if st.button("Download Chart as PNG", key="download_chart", class_="stDownloadButton"):
+    if st.button("Download Chart as PNG", key="download_chart"):
         chart.save("chart.png")
         st.success("Chart downloaded successfully!")
 
