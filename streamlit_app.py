@@ -11,7 +11,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom Streamlit styles
+import streamlit as st
+
 st.markdown(
     """
     <style>
@@ -21,7 +22,7 @@ st.markdown(
         background-color: #f8f8f8;
     }
     .stButton {
-        background-color: #007BFF;
+        background-color: #007BFF; /* Blue color for buttons */
         color: white;
         border-radius: 5px;
         padding: 0.35rem 0.75rem;
@@ -30,18 +31,17 @@ st.markdown(
         cursor: pointer;
     }
     .stMetric {
-        background-color: #f0f0f0;
-        color: #333;
+        background-color: #6c757d; /* Gray color for metric box */
+        color: white;
         border-radius: 5px;
         padding: 0.5rem 0.75rem;
         text-align: center;
     }
     .stMetricDelta {
-        color: #333;
+        color: black; /* Black color for metric delta text */
     }
     </style>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 def main():
