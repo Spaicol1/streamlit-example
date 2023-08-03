@@ -1,3 +1,10 @@
+
+I apologize for the oversight. You are right; the CSS styles may not be applied to the Streamlit app as expected when included within the <style> tag. It seems that Streamlit might not interpret the custom CSS styles directly from the markdown() function.
+
+To apply the custom styles correctly, you can use the st.write() function and include the CSS styles within HTML <style> tags along with the appropriate CSS classes. Here's the updated code to apply the styles:
+
+python
+Copy code
 import streamlit as st
 import pandas as pd
 import altair as alt
@@ -13,7 +20,7 @@ st.set_page_config(
 
 def main():
     # Custom Streamlit styles
-    st.markdown(
+    st.write(
         """
         <style>
         body {
@@ -42,8 +49,9 @@ def main():
         }
         </style>
         """
+        , unsafe_allow_html=True  # Allow HTML content
     )
-
+    
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
     years = list(range(1900, 2024))
