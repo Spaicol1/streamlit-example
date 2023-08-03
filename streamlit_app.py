@@ -11,34 +11,38 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-import streamlit as st
-
-st.markdown(
-    body {
-        font-family: "Arial";
-        color: #333;
-        background-color: #f8f8f8;
-    }
-    .stButton {
-        background-color: #007BFF; /* Blue color for buttons */
-        color: white;
-        border-radius: 5px;
-        padding: 0.35rem 0.75rem;
-        font-weight: bold;
-        font-size: 14px;
-        cursor: pointer;
-    }
-    .stMetric {
-        background-color: #6c757d; /* Gray color for metric box */
-        color: white;
-        border-radius: 5px;
-        padding: 0.5rem 0.75rem;
-        text-align: center;
-    }
-    .stMetricDelta {
-        color: black; /* Black color for metric delta text */
-    }
-)
+def main():
+    # Custom Streamlit styles
+    st.markdown(
+        """
+        <style>
+        body {
+            font-family: "Arial";
+            color: #333;
+            background-color: #f8f8f8;
+        }
+        .stButton {
+            background-color: #007BFF; /* Blue color for buttons */
+            color: white;
+            border-radius: 5px;
+            padding: 0.35rem 0.75rem;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .stMetric {
+            background-color: #6c757d; /* Gray color for metric box */
+            color: white;
+            border-radius: 5px;
+            padding: 0.5rem 0.75rem;
+            text-align: center;
+        }
+        .stMetricDelta {
+            color: black; /* Black color for metric delta text */
+        }
+        </style>
+        """
+    )
 
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
