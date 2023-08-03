@@ -3,6 +3,34 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
+# Define custom CSS styles for the app
+st.markdown("""
+    <style>
+    .stApp {
+        max-width: 800px;
+        margin: 0 auto;
+        padding-top: 20px;
+    }
+    .stApp h1 {
+        text-align: center;
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+    .stApp h2 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .stApp .stAlert {
+        text-align: center;
+        padding: 10px;
+    }
+    .stApp .stTable {
+        text-align: center;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
     years = list(range(1900, 2024))
@@ -84,7 +112,7 @@ def main():
     filtered_data = df  # You can replace this with actual filtering logic based on the selected values and years
 
     # Display the filtered data as a table
-    st.table(filtered_data)
+    st.dataframe(filtered_data)
 
     # Add a button to download the chart as PNG
     if st.button("Download Chart as PNG"):
