@@ -3,48 +3,26 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
-# Custom Streamlit styles and theme
-custom_styles = """
-    <style>
-    body {
-        font-family: "Arial";
-        color: #333;
-        background-color: #f8f8f8;
-    }
-    .stButton {
-        background-color: #007BFF; /* Blue color for buttons */
-        color: white;
-        border-radius: 5px;
-        padding: 0.35rem 0.75rem;
-        font-weight: bold;
-        font-size: 14px;
-        cursor: pointer;
-    }
-    .stMetric {
-        background-color: #6c757d; /* Gray color for metric box */
-        color: white;
-        border-radius: 5px;
-        padding: 0.5rem 0.75rem;
-        text-align: center;
-    }
-    .stMetricDelta {
-        color: black; /* Black color for metric delta text */
-    }
-    </style>
-"""
+import streamlit as st
+import pandas as pd
+import altair as alt
+import numpy as np
 
 def main():
-    # Set Streamlit theme
-    st.beta_set_page_config(
+    # Set Streamlit theme and custom styles
+    st.set_page_config(
         page_title="My Streamlit App",
         page_icon="📊",
         layout="wide",
         initial_sidebar_state="expanded",
+        # Define custom theme parameters
+        theme="default",  # or "light" or "dark"
+        primaryColor="#007BFF",  # Blue color for buttons
+        backgroundColor="#f8f8f8",  # Background color
+        textColor="#333",  # Text color
+        font="Arial",  # Font family
     )
 
-    # Apply custom Streamlit styles
-    st.markdown(custom_styles, unsafe_allow_html=True)
-    
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
     years = list(range(1900, 2024))
