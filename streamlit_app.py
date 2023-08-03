@@ -3,11 +3,6 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
-import streamlit as st
-import pandas as pd
-import altair as alt
-import numpy as np
-
 def main():
     # Set Streamlit theme and custom styles
     st.set_page_config(
@@ -22,6 +17,38 @@ def main():
         textColor="#333",  # Text color
         font="Arial",  # Font family
     )
+
+    # ... (rest of your code remains unchanged)
+
+    # Add a sidebar for selecting different sets of data and years
+    with st.sidebar:
+        # Use HTML to customize the font size for the header and selectbox labels
+        st.markdown(
+            """
+            <style>
+            .sidebar .sidebar-content .block-container h2 {
+                font-size: 24px;
+            }
+            .sidebar .sidebar-content .stSelectbox label {
+                font-size: 18px;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # Add the "Data Selection" header with a larger font size
+        st.subheader("Data Selection")
+
+        # Use larger font size for the selectbox labels
+        selected_establishment_type = st.selectbox("Select Establishment Type:", establishment_types, index=0)
+        selected_state = st.selectbox("Select State:", states, index=0)
+        selected_county = st.selectbox("Select County:", counties, index=0)
+        selected_naics = st.selectbox("Select NAICs:", naics, index=0)
+
+        st.subheader("Time Range")
+        start_year = st.slider("Select start year:", min_value=min(years), max_value=max(years), value=min(years))
+        end_year = st.slider("Select end year:", min_value=min(years), max_value=max(years), value=max(years))
 
 def main():
     # Sample data with years from 1900 to 2023 and randomly generated y-values
