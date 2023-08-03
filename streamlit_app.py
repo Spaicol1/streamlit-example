@@ -53,21 +53,16 @@ def main():
     st.header("My Streamlit App")
 
     # Add the chart
-    st.altair_chart(chart, use_container_width=True)
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.altair_chart(chart, use_container_width=True)
 
     # Add metrics for average growth, lowest, highest, and average
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.metric("Average Growth", f"{avg_growth:.2f}%", delta="3.27%")
-
     with col2:
+        st.metric("Average Growth", f"{avg_growth:.2f}%", delta="3.27%")
         st.metric("Lowest Value", lowest_value, delta="-2.12")
-
-    with col3:
         st.metric("Highest Value", highest_value, delta="4.63")
-
-    with col4:
         st.metric("Average Value", avg_value, delta="1.09")
 
 if __name__ == '__main__':
