@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
 
 # Sample data (you can replace this with your own data)
 df = pd.DataFrame({
@@ -13,17 +11,6 @@ df = pd.DataFrame({
     'Valore_Mercato': [100, 110, 120, 90, 95, 100, 80, 85, 90],
     'Valore_Locazione': [80, 85, 90, 70, 75, 80, 60, 65, 70]
 })
-
-# Function to create the map
-def create_map(df, selection):
-    fig = px.scatter_geo(df, lat=[0], lon=[0], text=selection, scope="world")
-    fig.update_geos(projection_type="natural earth")
-    return fig
-
-# Function to create the line chart
-def create_line_chart(df, selection):
-    fig = px.line(df, x='Year', y=selection, color='Fascia_Zona')
-    return fig
 
 # Sidebar for variable selection
 st.sidebar.title("Variable Selection")
@@ -43,18 +30,17 @@ st.title("Real Estate Dashboard")
 # Display map
 st.write("Map Selection:")
 st.write("You can customize the map display here.")
-map_fig = create_map(filtered_df, 'Provincia')
-st.plotly_chart(map_fig)
+
+# Create a map using Streamlit's native st.map function
+st.map(filtered_df)
 
 # Display line chart
 st.write("Line Chart:")
 if st.checkbox("Valore di Mercato $mq"):
-    line_chart_fig = create_line_chart(filtered_df, 'Valore_Mercato')
-    st.plotly_chart(line_chart_fig)
+    st.line_chart(filtered_df.groupby('Year')['Valore_Mercato'].mean())
 
 if st.checkbox("Valore Locazione $mq"):
-    line_chart_fig = create_line_chart(filtered_df, 'Valore_Locazione')
-    st.plotly_chart(line_chart_fig)
+    st.line_chart(filtered_df.groupby('Year')['Valore_Locazione'].mean())
 
 # Display legend
 st.write("Legend:")
