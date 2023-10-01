@@ -1,4 +1,5 @@
 import streamlit as st
+from st.nivo import geomap, line
 import pandas as pd
 
 # Sample data (you can replace this with your own data)
@@ -15,11 +16,26 @@ df = pd.DataFrame({
 # Sidebar for variable selection
 st.sidebar.title("Map Selection")
 
-# Create a map with a default view of Italy
-st.sidebar.map([])
-
 # Placeholder to display selected location information
 selected_location = st.sidebar.empty()
+
+# Placeholder for the map
+map_container = st.empty()
+
+# Placeholder for line charts
+line_chart_container = st.empty()
+
+# Create a map with a default view of Italy
+italian_map_data = {
+    "features": [],
+    "config": {
+        "center": [41.87194, 12.56738],  # Centered on Italy
+        "zoom": 5,
+    },
+}
+
+italian_map = geomap(italian_map_data, height=400)
+map_container.st_nivo_chart(italian_map)
 
 # Right side for displaying charts and legend
 st.title("Real Estate Dashboard")
@@ -27,10 +43,12 @@ st.title("Real Estate Dashboard")
 # Display line chart
 st.write("Line Chart:")
 if st.checkbox("Valore di Mercato $mq"):
-    st.line_chart(df.groupby('Year')['Valore_Mercato'].mean())
+    line_chart_fig = line(df, x='Year', y='Valore_Mercato', height=400)
+    line_chart_container.st_nivo_chart(line_chart_fig)
 
 if st.checkbox("Valore Locazione $mq"):
-    st.line_chart(df.groupby('Year')['Valore_Locazione'].mean())
+    line_chart_fig = line(df, x='Year', y='Valore_Locazione', height=400)
+    line_chart_container.st_nivo_chart(line_chart_fig)
 
 # Display legend
 st.write("Legend:")
