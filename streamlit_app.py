@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit_folium as sf
 import folium
 import json
+import pandas as pd
 
 # Sample data (you can replace this with your own data)
 df = pd.DataFrame({
@@ -76,4 +77,3 @@ if st.checkbox("Show Legend"):
     # You can add your legend display code here
 
 # You can customize the map, line chart, and legend display as needed
-
