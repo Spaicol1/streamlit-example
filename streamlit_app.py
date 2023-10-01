@@ -1,144 +1,63 @@
 import streamlit as st
 import pandas as pd
-import altair as alt
-import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
 
-def main():
-    # Set Streamlit theme and custom styles
-    st.set_page_config(
-        page_title="My Streamlit App",
-        page_icon="📊",
-        layout="wide",
-        initial_sidebar_state="expanded",
-        # Define custom theme parameters
-        theme="default",  # or "light" or "dark"
-        primaryColor="#007BFF",  # Blue color for buttons
-        backgroundColor="#f8f8f8",  # Background color
-        textColor="#333",  # Text color
-        font="Arial",  # Font family
-    )
+# Sample data (you can replace this with your own data)
+df = pd.DataFrame({
+    'Year': [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018],
+    'Provincia': ['A', 'A', 'A', 'B', 'B', 'B', 'C', 'C', 'C'],
+    'Comune': ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3'],
+    'Fascia_Zona': ['Z1', 'Z2', 'Z3', 'Z1', 'Z2', 'Z3', 'Z1', 'Z2', 'Z3'],
+    'Destinazione_Uso': ['D1', 'D2', 'D3', 'D1', 'D2', 'D3', 'D1', 'D2', 'D3'],
+    'Valore_Mercato': [100, 110, 120, 90, 95, 100, 80, 85, 90],
+    'Valore_Locazione': [80, 85, 90, 70, 75, 80, 60, 65, 70]
+})
 
-    # ... (rest of your code remains unchanged)
+# Function to create the map
+def create_map(df, selection):
+    fig = px.scatter_geo(df, lat=[0], lon=[0], text=selection, scope="world")
+    fig.update_geos(projection_type="natural earth")
+    return fig
 
-    # Add a sidebar for selecting different sets of data and years
-    with st.sidebar:
-        # Use HTML to customize the font size for the header and selectbox labels
-        st.markdown(
-            """
-            <style>
-            .sidebar .sidebar-content .block-container h2 {
-                font-size: 24px;
-            }
-            .sidebar .sidebar-content .stSelectbox label {
-                font-size: 18px;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+# Function to create the line chart
+def create_line_chart(df, selection):
+    fig = px.line(df, x='Year', y=selection, color='Fascia_Zona')
+    return fig
 
-        # Add the "Data Selection" header with a larger font size
-        st.subheader("Data Selection")
+# Sidebar for variable selection
+st.sidebar.title("Variable Selection")
 
-        # Use larger font size for the selectbox labels
-        selected_establishment_type = st.selectbox("Select Establishment Type:", establishment_types, index=0)
-        selected_state = st.selectbox("Select State:", states, index=0)
-        selected_county = st.selectbox("Select County:", counties, index=0)
-        selected_naics = st.selectbox("Select NAICs:", naics, index=0)
+year = st.sidebar.slider("Select Year", min_value=df['Year'].min(), max_value=df['Year'].max())
+provincia = st.sidebar.selectbox("Select Provincia", df['Provincia'].unique())
+comune = st.sidebar.selectbox("Select Comune", df[df['Provincia'] == provincia]['Comune'].unique())
+fascia_zona = st.sidebar.selectbox("Select Fascia/Zona", df[(df['Provincia'] == provincia) & (df['Comune'] == comune)]['Fascia_Zona'].unique())
+destinazione_uso = st.sidebar.multiselect("Select Destinazione d'uso", df['Destinazione_Uso'].unique())
 
-        st.subheader("Time Range")
-        start_year = st.slider("Select start year:", min_value=min(years), max_value=max(years), value=min(years))
-        end_year = st.slider("Select end year:", min_value=min(years), max_value=max(years), value=max(years))
+# Filter data based on selections
+filtered_df = df[(df['Year'] == year) & (df['Provincia'] == provincia) & (df['Comune'] == comune) & (df['Fascia_Zona'] == fascia_zona) & (df['Destinazione_Uso'].isin(destinazione_uso))]
 
-def main():
-    # Sample data with years from 1900 to 2023 and randomly generated y-values
-    years = list(range(1900, 2024))
-    y_values = np.random.randint(0, 100, len(years))
+# Right side for displaying charts and legend
+st.title("Real Estate Dashboard")
 
-    # Sample data for the dropdowns (You can replace these with your own data)
-    establishment_types = ['Type A', 'Type B', 'Type C']
-    states = ['State A', 'State B', 'State C']
-    counties = ['County A', 'County B', 'County C']
-    naics = ['NAICs 1', 'NAICs 2', 'NAICs 3']
+# Display map
+st.write("Map Selection:")
+st.write("You can customize the map display here.")
+map_fig = create_map(filtered_df, 'Provincia')
+st.plotly_chart(map_fig)
 
-    # Combine years and y_values into tuples using zip and create a DataFrame
-    data = {
-        'x_values': years,
-        'y_values': y_values
-    }
-    df = pd.DataFrame(data)
+# Display line chart
+st.write("Line Chart:")
+if st.checkbox("Valore di Mercato $mq"):
+    line_chart_fig = create_line_chart(filtered_df, 'Valore_Mercato')
+    st.plotly_chart(line_chart_fig)
 
-    # Create the line chart using Altair
-    line_chart = alt.Chart(df).mark_line(color='blue').encode(
-        x='x_values',
-        y='y_values'
-    )
+if st.checkbox("Valore Locazione $mq"):
+    line_chart_fig = create_line_chart(filtered_df, 'Valore_Locazione')
+    st.plotly_chart(line_chart_fig)
 
-    # Add interactive data points using the `circle` mark
-    data_points = line_chart.mark_circle(color='orange', size=60).encode(
-        tooltip=['x_values', 'y_values']  # Show x and y values on hover
-    )
-
-    # Calculate the average value
-    avg_value = np.mean(y_values)
-    # Calculate the average growth over time
-    avg_growth = (y_values[-1] - y_values[0]) / (years[-1] - years[0]) * 100
-    # Calculate the lowest and highest values
-    lowest_value = np.min(y_values)
-    highest_value = np.max(y_values)
-
-    # Create the average line
-    avg_line = alt.Chart(pd.DataFrame({'avg_value': [avg_value]})).mark_rule(color='red').encode(y='avg_value')
-
-    # Combine the line chart, data points, and average line using Altair's layer
-    chart = alt.layer(line_chart, data_points, avg_line).interactive()
-
-    # Add a title to the chart
-    st.title("Line Chart with Hover Data Points")
-
-    # Add the chart
-    st.altair_chart(chart, use_container_width=True)
-
-    # Add a header for the page
-    st.title("My Streamlit App")
-
-    # Add metrics for average growth, lowest, highest, and average
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.metric("Average Growth", f"{avg_growth:.2f}%", delta="3.27%")
-
-    with col2:
-        st.metric("Lowest Value", lowest_value, delta="-2.12")
-
-    with col3:
-        st.metric("Highest Value", highest_value, delta="4.63")
-
-    with col4:
-        st.metric("Average Value", avg_value, delta="1.09")
-
-    # Add a sidebar for selecting different sets of data and years
-    with st.sidebar:
-        st.subheader("Data Selection")
-        selected_establishment_type = st.selectbox("Select Establishment Type:", establishment_types)
-        selected_state = st.selectbox("Select State:", states)
-        selected_county = st.selectbox("Select County:", counties)
-        selected_naics = st.selectbox("Select NAICs:", naics)
-
-        st.subheader("Time Range")
-        start_year = st.slider("Select start year:", min_value=min(years), max_value=max(years), value=min(years))
-        end_year = st.slider("Select end year:", min_value=min(years), max_value=max(years), value=max(years))
-
-    # Filter the data based on the selected dropdown values and years
-    filtered_data = df[(df['x_values'] >= start_year) & (df['x_values'] <= end_year)]
-
-    # Display the filtered data as a table
-    st.table(filtered_data)
-
-    # Add a button to download the chart as PNG
-    if st.button("Download Chart as PNG", key="download_chart"):
-        chart.save("chart.png")
-        st.success("Chart downloaded successfully!")
-
-if __name__ == '__main__':
-    main()
+# Display legend
+st.write("Legend:")
+if st.checkbox("Show Legend"):
+    legend_text = "\n".join([f"{fascia}: {filtered_df[filtered_df['Fascia_Zona'] == fascia]['Valore_Mercato'].mean():.2f}" for fascia in filtered_df['Fascia_Zona'].unique()])
+    st.write(legend_text)
