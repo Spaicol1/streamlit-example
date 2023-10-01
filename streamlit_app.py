@@ -1,6 +1,7 @@
 import streamlit as st
-from st.nivo import geomap, line
-import pandas as pd
+import streamlit_folium as sf
+import folium
+import json
 
 # Sample data (you can replace this with your own data)
 df = pd.DataFrame({
@@ -13,45 +14,66 @@ df = pd.DataFrame({
     'Valore_Locazione': [80, 85, 90, 70, 75, 80, 60, 65, 70]
 })
 
+# Title
+st.title("Italian Provinces Map and Real Estate Dashboard")
+
+# Load GeoJSON data for Italian provinces
+with open("italy_provinces.geojson", "r") as f:
+    geo_data = json.load(f)
+
+# Create a Folium map
+m = folium.Map(location=[41.9028, 12.4964], zoom_start=6)
+
+# Add GeoJSON data with choropleth
+folium.Choropleth(
+    geo_data=geo_data,
+    name="choropleth",
+    data=None,  # You can assign province-specific data here if needed
+    columns=None,
+    key_on="feature.properties.NAME_1",
+    fill_color="YlGnBu",  # You can use different color schemes
+    fill_opacity=0.7,
+    line_opacity=0.2,
+).add_to(m)
+
+# Display the Folium map using streamlit_folium
+sf.folium_static(m)
+
 # Sidebar for variable selection
-st.sidebar.title("Map Selection")
+st.sidebar.title("Variable Selection")
 
-# Placeholder to display selected location information
-selected_location = st.sidebar.empty()
+year = st.sidebar.slider("Select Year", min_value=df['Year'].min(), max_value=df['Year'].max())
+provincia = st.sidebar.selectbox("Select Provincia", df['Provincia'].unique())
+comune = st.sidebar.selectbox("Select Comune", df[df['Provincia'] == provincia]['Comune'].unique())
+fascia_zona = st.sidebar.selectbox("Select Fascia/Zona", df[(df['Provincia'] == provincia) & (df['Comune'] == comune)]['Fascia_Zona'].unique())
+destinazione_uso = st.sidebar.multiselect("Select Destinazione d'uso", df['Destinazione_Uso'].unique())
 
-# Placeholder for the map
-map_container = st.empty()
-
-# Placeholder for line charts
-line_chart_container = st.empty()
-
-# Create a map with a default view of Italy
-italian_map_data = {
-    "features": [],
-    "config": {
-        "center": [41.87194, 12.56738],  # Centered on Italy
-        "zoom": 5,
-    },
-}
-
-italian_map = geomap(italian_map_data, height=400)
-map_container.st_nivo_chart(italian_map)
+# Filter data based on selections
+filtered_df = df[(df['Year'] == year) & (df['Provincia'] == provincia) & (df['Comune'] == comune) & (df['Fascia_Zona'] == fascia_zona) & (df['Destinazione_Uso'].isin(destinazione_uso))]
 
 # Right side for displaying charts and legend
-st.title("Real Estate Dashboard")
+st.write("Real Estate Dashboard")
+
+# Display map
+st.write("Map Selection:")
+st.write("You can customize the map display here.")
+# Create map using Streamlit elements or external libraries
 
 # Display line chart
 st.write("Line Chart:")
 if st.checkbox("Valore di Mercato $mq"):
-    line_chart_fig = line(df, x='Year', y='Valore_Mercato', height=400)
-    line_chart_container.st_nivo_chart(line_chart_fig)
+    # Create line chart for "Valore di Mercato $mq"
+    # You can add your line chart code here
 
 if st.checkbox("Valore Locazione $mq"):
-    line_chart_fig = line(df, x='Year', y='Valore_Locazione', height=400)
-    line_chart_container.st_nivo_chart(line_chart_fig)
+    # Create line chart for "Valore Locazione $mq"
+    # You can add your line chart code here
 
 # Display legend
 st.write("Legend:")
 if st.checkbox("Show Legend"):
-    legend_text = "\n".join([f"{fascia}: {df[df['Fascia_Zona'] == fascia]['Valore_Mercato'].mean():.2f}" for fascia in df['Fascia_Zona'].unique()])
-    st.write(legend_text)
+    # Display the legend
+    # You can add your legend display code here
+
+# You can customize the map, line chart, and legend display as needed
+
