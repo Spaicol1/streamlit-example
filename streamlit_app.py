@@ -3,6 +3,7 @@ import streamlit_folium as sf
 import folium
 import json
 import pandas as pd
+import plotly.express as px
 
 # Sample data (you can replace this with your own data)
 df = pd.DataFrame({
@@ -64,16 +65,19 @@ st.write("You can customize the map display here.")
 st.write("Line Chart:")
 if st.checkbox("Valore di Mercato $mq"):
     # Create line chart for "Valore di Mercato $mq"
-    # You can add your line chart code here
+    fig_mercato = px.line(filtered_df, x='Year', y='Valore_Mercato', color='Destinazione_Uso', title="Valore di Mercato $mq")
+    st.plotly_chart(fig_mercato)
 
 if st.checkbox("Valore Locazione $mq"):
     # Create line chart for "Valore Locazione $mq"
-    # You can add your line chart code here
+    fig_locazione = px.line(filtered_df, x='Year', y='Valore_Locazione', color='Destinazione_Uso', title="Valore Locazione $mq")
+    st.plotly_chart(fig_locazione)
 
 # Display legend
 st.write("Legend:")
 if st.checkbox("Show Legend"):
     # Display the legend
-    # You can add your legend display code here
+    legend_text = "\n".join([f"{uso}: {filtered_df[filtered_df['Destinazione_Uso'] == uso]['Valore_Mercato'].mean():.2f}" for uso in filtered_df['Destinazione_Uso'].unique()])
+    st.write(legend_text)
 
 # You can customize the map, line chart, and legend display as needed
