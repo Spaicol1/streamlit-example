@@ -1,5 +1,5 @@
 import streamlit as st
-import json
+import streamlit_folium as sf
 import folium
 import pandas as pd
 import plotly.express as px
@@ -18,29 +18,23 @@ df = pd.DataFrame({
 # Title
 st.title("Italian Provinces Map and Real Estate Dashboard")
 
-# Load GeoJSON data for Italian provinces
-with open("italy_provinces.geojson", "r") as f:
-    geo_data = json.load(f)
-
 # Create a Folium map
 m = folium.Map(location=[41.9028, 12.4964], zoom_start=6)
 
 # Add GeoJSON data with choropleth
 folium.Choropleth(
-    geo_data=geo_data,
+    geo_data="https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/italy.geojson",
     name="choropleth",
     data=None,  # You can assign province-specific data here if needed
     columns=None,
-    key_on="feature.properties.NAME_1",
+    key_on="feature.properties.name",
     fill_color="YlGnBu",  # You can use different color schemes
     fill_opacity=0.7,
     line_opacity=0.2,
 ).add_to(m)
 
-# Display the Folium map
-st.write("Map Selection:")
-st.write("You can customize the map display here.")
-st.write(m)
+# Display the Folium map using streamlit_folium
+sf.folium_static(m)
 
 # Sidebar for variable selection
 st.sidebar.title("Variable Selection")
@@ -56,6 +50,11 @@ filtered_df = df[(df['Year'] == year) & (df['Provincia'] == provincia) & (df['Co
 
 # Right side for displaying charts and legend
 st.write("Real Estate Dashboard")
+
+# Display map
+st.write("Map Selection:")
+st.write("You can customize the map display here.")
+# Create map using Streamlit elements or external libraries
 
 # Display line chart
 st.write("Line Chart:")
