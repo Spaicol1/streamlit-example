@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit_folium as sf
 import folium
 import pandas as pd
 import plotly.express as px
@@ -33,8 +32,10 @@ folium.Choropleth(
     line_opacity=0.2,
 ).add_to(m)
 
-# Display the Folium map using streamlit_folium
-sf.folium_static(m)
+# Display the Folium map
+st.write("Map Selection:")
+st.write("You can customize the map display here.")
+st.map(m)
 
 # Sidebar for variable selection
 st.sidebar.title("Variable Selection")
@@ -50,11 +51,6 @@ filtered_df = df[(df['Year'] == year) & (df['Provincia'] == provincia) & (df['Co
 
 # Right side for displaying charts and legend
 st.write("Real Estate Dashboard")
-
-# Display map
-st.write("Map Selection:")
-st.write("You can customize the map display here.")
-# Create map using Streamlit elements or external libraries
 
 # Display line chart
 st.write("Line Chart:")
